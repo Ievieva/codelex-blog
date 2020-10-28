@@ -31,13 +31,15 @@ function query(): QueryBuilder
     return database()->createQueryBuilder();
 }
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $namespace = '\App\Controllers\\';
 
     $r->addRoute('GET', '/', $namespace . 'ArticlesController@index');
 
     $r->addRoute('GET', '/articles', $namespace . 'ArticlesController@index');
     $r->addRoute('GET', '/articles/{id}', $namespace . 'ArticlesController@show');
+    $r->addRoute('GET', '/articles/{id}/edit', $namespace . 'ArticlesController@edit');
+    $r->addRoute('PUT', '/articles/{id}', $namespace . 'ArticlesController@update');
     $r->addRoute('DELETE', '/articles/{id}', $namespace . 'ArticlesController@delete');
 
     $r->addRoute('POST', '/articles/{id}/comments', $namespace . 'CommentsController@store');

@@ -7,8 +7,6 @@ use App\Models\Comment;
 
 class ArticlesController
 {
-    private array $articles;
-
     public function index()
     {
         $articlesQuery = query()
@@ -20,17 +18,16 @@ class ArticlesController
 
         $articles = [];
 
-        foreach ($articlesQuery as $article)
-        {
+        foreach ($articlesQuery as $article) {
             $articles[] = new Article(
-                (int) $article['id'],
+                (int)$article['id'],
                 $article['title'],
                 $article['content'],
                 $article['created_at']
             );
         }
 
-        return require_once __DIR__  . '/../Views/ArticlesIndexView.php';
+        return require_once __DIR__ . '/../Views/ArticlesIndexView.php';
     }
 
     public function show(array $vars)
@@ -39,7 +36,7 @@ class ArticlesController
             ->select('*')
             ->from('articles')
             ->where('id = :id')
-            ->setParameter('id', (int) $vars['id'])
+            ->setParameter('id', (int)$vars['id'])
             ->execute()
             ->fetchAssociative();
 
@@ -47,15 +44,14 @@ class ArticlesController
             ->select('*')
             ->from('comments')
             ->where('article_id = :articleId')
-            ->setParameter('articleId', (int) $vars['id'])
+            ->setParameter('articleId', (int)$vars['id'])
             ->orderBy('created_at', 'desc')
             ->execute()
             ->fetchAllAssociative();
 
         $comments = [];
 
-        foreach ($commentsQuery as $comment)
-        {
+        foreach ($commentsQuery as $comment) {
             $comments[] = new Comment(
                 $comment['id'],
                 $comment['article_id'],
@@ -66,13 +62,13 @@ class ArticlesController
         }
 
         $article = new Article(
-            (int) $articleQuery['id'],
+            (int)$articleQuery['id'],
             $articleQuery['title'],
             $articleQuery['content'],
             $articleQuery['created_at'],
         );
 
-        return require_once __DIR__  . '/../Views/ArticlesShowView.php';
+        return require_once __DIR__ . '/../Views/ArticlesShowView.php';
     }
 
     public function delete(array $vars)
@@ -80,9 +76,46 @@ class ArticlesController
         query()
             ->delete('articles')
             ->where('id = :id')
-            ->setParameter('id', (int) $vars['id'])
+            ->setParameter('id', (int)$vars['id'])
             ->execute();
 
         header('Location: /articles/');
+    }
+
+    public function update(array $vars)
+    {
+        query()
+            ->update('articles')
+            ->set('title', ':title')
+            ->set('content', ':content')
+            ->setParameters([
+                'title' => $_POST['title'],
+                'content' => $_POST['content']
+            ])
+            ->where('id = :id')
+            ->setParameter('id', (int)$vars['id'])
+            ->execute();
+
+        header('Location: /articles/' . $vars['id']);
+    }
+
+    public function edit(array $vars)
+    {
+        $articleQuery = query()
+            ->select('*')
+            ->from('articles')
+            ->where('id = :id')
+            ->setParameter('id', (int)$vars['id'])
+            ->execute()
+            ->fetchAssociative();
+
+        $article = new Article(
+            (int)$articleQuery['id'],
+            $articleQuery['title'],
+            $articleQuery['content'],
+            $articleQuery['created_at'],
+        );
+
+        return require_once __DIR__ . '/../Views/ArticlesEditView.php';
     }
 }
