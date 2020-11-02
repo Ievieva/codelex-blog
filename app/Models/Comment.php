@@ -30,11 +30,6 @@ class Comment
         return $this->id;
     }
 
-    public function articleId(): int
-    {
-        return $this->articleId;
-    }
-
     public function name(): string
     {
         return $this->name;
@@ -43,6 +38,11 @@ class Comment
     public function content(): string
     {
         return $this->content;
+    }
+
+    public function articleId(): int
+    {
+        return $this->articleId;
     }
 
     public function createdAt(): string

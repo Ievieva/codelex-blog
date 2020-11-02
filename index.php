@@ -40,8 +40,20 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/articles', $namespace . 'ArticlesController@index');
     $r->addRoute('GET', '/articles/{id}', $namespace . 'ArticlesController@show');
     $r->addRoute('DELETE', '/articles/{id}', $namespace . 'ArticlesController@delete');
-
+    $r->addRoute('GET', '/articles/{id}/edit', $namespace . 'ArticlesController@edit');
+    $r->addRoute('PUT', '/articles/{id}', $namespace . 'ArticlesController@update');
     $r->addRoute('POST', '/articles/{id}/comments', $namespace . 'CommentsController@store');
+    $r->addRoute(
+        'GET',
+        '/articles/{id}/comments/edit',
+        $namespace . 'CommentsController@edit'
+    );
+    $r->addRoute(
+        'DELETE',
+        '/articles/{article_id}/comments/{id}',
+        $namespace . 'CommentsController@delete'
+    );
+
 
     $r->addRoute('GET', '/register', $namespace . 'RegisterController@showRegistrationForm');
     $r->addRoute('POST', '/register', $namespace . 'RegisterController@register');

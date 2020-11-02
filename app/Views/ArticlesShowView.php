@@ -16,6 +16,9 @@
             </li>
         <?php endforeach; ?>
     </ul>
+        <form method="get" action="/articles/<?php echo $article->id()?>/comments/edit">
+            <button type="submit">Edit</button>
+        </form>
     <?php else: ?>
         <strong>No comments.</strong>
     <?php endif; ?>

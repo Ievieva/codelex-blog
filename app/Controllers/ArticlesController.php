@@ -7,7 +7,6 @@ use App\Models\Comment;
 
 class ArticlesController
 {
-    private array $articles;
 
     public function index()
     {
@@ -83,6 +82,6 @@ class ArticlesController
             ->setParameter('id', (int) $vars['id'])
             ->execute();
 
-        header('Location: /articles/');
+        header('Location: /articles');
     }
 }
